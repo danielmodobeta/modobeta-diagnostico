@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Estratégico Gratuito — Modobeta</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0b1d3a;
+  --navy2: #122348;
+  --navy3: #1a2f5e;
+  --blue: #1e40af;
+  --blue-mid: #2563eb;
+  --blue-light: #dbeafe;
+  --blue-xlight: #eff6ff;
+  --yellow: #e8ff00;
+  --yellow2: #d4eb00;
+  --yellow3: #f5ff66;
+  --yellow-light: #faffd6;
+  --white: #ffffff;
+  --off: #f8f9fc;
+  --border: #e2e8f0;
+  --border2: #cbd5e1;
+  --text: #0f172a;
+  --text2: #475569;
+  --text3: #94a3b8;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --green: #16a34a;
+  --green-light: #f0fdf4;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 2px 12px rgba(11,29,58,0.08);
+  --shadow-md: 0 4px 20px rgba(11,29,58,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--off);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* HERO */
+.hero {
+  background: var(--navy);
+  padding: 2.5rem 1.5rem 3.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -120px; right: -80px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(232,255,0,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 36px;
+  background: var(--off);
+  clip-path: ellipse(58% 100% at 50% 100%);
+}
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--white);
+  margin-bottom: 1.75rem;
+  display: inline-block;
+  letter-spacing: -0.02em;
+}
+.logo em { font-style: normal; color: var(--yellow); }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(232,255,0,0.12);
+  border: 1px solid rgba(232,255,0,0.3);
+  border-radius: 100px;
+  padding: 5px 16px;
+  font-size: 11.5px;
+  color: var(--yellow);
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.8rem, 5vw, 2.9rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 1rem;
+  max-width: 580px;
+  margin-left: auto; margin-right: auto;
+}
+.hero h1 em { font-style: normal; color: var(--yellow); }
+.hero-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.65);
+  max-width: 460px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+.hero-stats { display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+.hero-stat .num {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--yellow);
+}
+.hero-stat .lbl {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* PROGRESS */
+.progress-wrap {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 1.75rem 1.5rem 0;
+}
+.progress-bar-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--yellow);
+  border-radius: 100px;
+  transition: width 0.4s ease;
+  width: 25%;
+}
+.steps-row { display: flex; justify-content: space-between; }
+.step-dot { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; }
+.step-circle {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+  color: var(--text3);
+  background: var(--white);
+  transition: all 0.3s;
+  font-family: 'Syne', sans-serif;
+}
+.step-circle.active { border-color: var(--blue-mid); color: var(--blue-mid); background: var(--blue-xlight); }
+.step-circle.done { border-color: var(--yellow2); background: var(--yellow); color: var(--navy); font-size: 13px; }
+.step-lbl { font-size: 10px; color: var(--text3); text-align: center; font-weight: 500; }
+.step-lbl.active { color: var(--blue-mid); font-weight: 700; }
+
+/* MAIN */
+.main { max-width: 620px; margin: 0 auto; padding: 1.5rem; }
+.screen { display: none; }
+.screen.active { display: block; animation: fadeUp 0.3s ease; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+/* CARD */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+}
+.card-sub {
+  font-size: 13.5px;
+  color: var(--text2);
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+}
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-field { display: flex; flex-direction: column; gap: 5px; }
+.form-field.full { grid-column: 1/-1; }
+.form-field label {
+  font-size: 11px; color: var(--text3);
+  font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  background: var(--off);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  padding: 10px 13px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--blue-mid);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  background: var(--white);
+}
+.form-field select { appearance: none; cursor: pointer; }
+.form-field textarea { resize: vertical; min-height: 72px; }
+.char-count { font-size: 11px; color: var(--text3); text-align: right; }
+
+/* DAFO */
+.dafo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1rem; }
+.dafo-quad {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+}
+.dafo-quad-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.dafo-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.dafo-quad-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800; color: var(--navy); }
+.dafo-badge { font-size: 10px; padding: 2px 9px; border-radius: 100px; margin-left: auto; font-weight: 700; border: 1.5px solid; }
+.dafo-tip {
+  font-size: 12px; color: var(--text2);
+  margin-bottom: 8px; line-height: 1.55;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--off);
+  border-left: 3px solid;
+}
+.dafo-tip em { color: var(--text3); font-style: normal; display: block; margin-top: 2px; font-size: 11px; }
+.tag-area {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  min-height: 38px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  cursor: text;
+  background: var(--off);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.tag-area:focus-within { border-color: var(--blue-mid); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+.tag {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 12px; font-weight: 600;
+  padding: 3px 10px; border-radius: 100px; border: 1.5px solid;
+}
+.tag button { background:none; border:none; cursor:pointer; font-size:14px; line-height:1; padding:0; opacity:0.5; color:inherit; }
+.tag button:hover { opacity:1; }
+.tag-input {
+  border:none; outline:none; font-size:13px;
+  background:transparent; color:var(--text);
+  min-width:80px; flex:1;
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+.tag-input::placeholder { color:var(--text3); }
+.example-chips { display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; }
+.example-chip {
+  font-size:11px; padding:3px 9px; border-radius:100px;
+  background:var(--off); border:1px solid var(--border2);
+  color:var(--text3); cursor:pointer; transition:all 0.15s; font-weight:600;
+}
+.example-chip:hover { background:var(--yellow-light); border-color:var(--yellow2); color:var(--navy); }
+
+/* BUTTONS */
+.btn-primary {
+  background: var(--yellow);
+  color: var(--navy);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 28px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: all 0.2s;
+  letter-spacing: -0.01em;
+  box-shadow: 0 4px 14px rgba(232,255,0,0.35);
+}
+.btn-primary:hover { background: var(--yellow2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,255,0,0.45); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none; }
+.btn-secondary {
+  background: transparent;
+  color: var(--text2);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 12px 20px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px; cursor: pointer; transition: all 0.2s; font-weight: 500;
+}
+.btn-secondary:hover { border-color: var(--blue-mid); color: var(--blue-mid); }
+.btn-row { display:flex; gap:10px; justify-content:flex-end; margin-top:1.25rem; }
+
+/* GATE */
+.gate-icon-wrap {
+  width: 52px; height: 52px;
+  background: var(--yellow-light);
+  border: 2px solid rgba(232,255,0,0.4);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin-bottom: 1rem;
+}
+.privacy-note { font-size:11.5px; color:var(--text3); margin-top:10px; display:flex; align-items:center; gap:5px; }
+
+/* CAME */
+.came-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:1rem; }
+.came-card {
+  background:var(--white);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  padding:1rem;
+  box-shadow:var(--shadow);
+}
+.came-header { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.came-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+.came-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:800; color:var(--navy); }
+.came-badge { font-size:10px; padding:2px 9px; border-radius:100px; margin-left:auto; font-weight:700; border:1.5px solid; }
+.came-body { font-size:13px; color:var(--text2); line-height:1.65; }
+.came-body p { margin-bottom:8px; }
+.came-body ul { padding-left:1.1rem; }
+.came-body li { margin-bottom:5px; }
+.spinner-wrap { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text3); padding:6px 0; }
+.spinner { width:14px; height:14px; border:2px solid var(--border); border-top-color:var(--blue-mid); border-radius:50%; animation:spin 0.7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* CONCLUSIÓN */
+.conclusion-card {
+  background: var(--navy);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.conclusion-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(232,255,0,0.15) 0%, transparent 70%);
+}
+.conclusion-label { font-size:11px; color:var(--yellow); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; font-weight:700; }
+.conclusion-text { font-size:14px; color:rgba(255,255,255,0.88); line-height:1.75; }
+
+/* CIERRE */
+.cierre-stat {
+  background: var(--yellow);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.cierre-stat::before {
+  content: '';
+  position: absolute;
+  top: -30px; left: -30px;
+  width: 120px; height: 120px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+}
+.cierre-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 3.25rem;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.cierre-msg { font-size:14px; color:var(--navy); max-width:400px; margin:0 auto; line-height:1.65; opacity:0.85; }
+.cierre-msg strong { opacity:1; font-weight:700; }
+
+/* OPCIONES */
+.opciones-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.opcion-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:1rem; }
+.opcion-card {
+  background:var(--white);
+  border:2px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.25rem;
+  cursor:pointer;
+  transition:all 0.2s;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+.opcion-card:hover { border-color:var(--yellow2); box-shadow:0 4px 16px rgba(232,255,0,0.25); }
+.opcion-card.selected { border-color:var(--yellow2); background:var(--yellow-light); box-shadow:0 4px 16px rgba(232,255,0,0.3); }
+.opcion-icon { font-size:2rem; margin-bottom:8px; }
+.opcion-title { font-family:'Syne',sans-serif; font-size:13px; font-weight:800; margin-bottom:4px; color:var(--navy); }
+.opcion-desc { font-size:12px; color:var(--text2); line-height:1.5; }
+
+.wsp-btn {
+  width:100%;
+  background:#25d366; color:#fff;
+  border:none; border-radius:var(--radius-sm);
+  padding:14px;
+  font-family:'Syne',sans-serif; font-weight:800; font-size:15px;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  transition:all 0.2s; margin-bottom:10px;
+  box-shadow:0 4px 14px rgba(37,211,102,0.3);
+}
+.wsp-btn:hover { background:#1ebe5d; transform:translateY(-1px); }
+
+.summary-mini { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1rem; }
+.summary-pill {
+  font-size:12px; padding:4px 13px;
+  background:var(--white); border:1.5px solid var(--border);
+  border-radius:100px; color:var(--text2); font-weight:500;
+  box-shadow:var(--shadow);
+}
+.summary-pill span { color:var(--blue-mid); font-weight:700; }
+
+.err-msg {
+  font-size:12.5px; color:var(--red);
+  background:var(--red-light); border:1px solid rgba(220,38,38,0.2);
+  border-radius:var(--radius-sm); padding:8px 13px; margin-top:8px; display:none;
+}
+.err-msg.show { display:block; }
+
+.herr-msg {
+  background:var(--blue-xlight);
+  border:1.5px solid rgba(37,99,235,0.2);
+  border-radius:var(--radius);
+  padding:1rem; font-size:13px; color:var(--text2); line-height:1.6; display:none;
+}
+
+.footer {
+  text-align:center; padding:2rem 1.5rem;
+  font-size:12px; color:var(--text3);
+  border-top:1px solid var(--border); margin-top:2rem;
+}
+.footer strong { color:var(--blue-mid); }
+
+@media (max-width:520px) {
+  .form-grid,.dafo-grid,.came-grid,.opcion-grid { grid-template-columns:1fr; }
+  .hero h1 { font-size:1.65rem; }
+  .hero-stats { gap:1.5rem; }
+  .main { padding:1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo">modo<em>beta</em></div>
+  <div class="hero-badge">✦ Diagnóstico estratégico · 100% gratuito</div>
+  <h1>Descubre qué está frenando el crecimiento de tu <em>negocio</em></h1>
+  <p class="hero-sub">En 5 minutos obtienes tu análisis DAFO y un plan de acción CAME generado con inteligencia artificial. Sin costo. Sin complicaciones.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">5 min</div><div class="lbl">para completar</div></div>
+    <div class="hero-stat"><div class="num">100%</div><div class="lbl">gratuito</div></div>
+    <div class="hero-stat"><div class="num">IA</div><div class="lbl">analiza tu caso</div></div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-track"><div class="progress-bar-fill" id="pbar"></div></div>
+  <div class="steps-row">
+    <div class="step-dot"><div class="step-circle active" id="sc1">1</div><div class="step-lbl active" id="sl1">Tu negocio</div></div>
+    <div class="step-dot"><div class="step-circle" id="sc2">2</div><div class="step-lbl" id="sl2">Contacto</div></div>
+    <div class="step-dot"><div class="step-circle" id="sc3">3</div><div class="step-lbl" id="sl3">DAFO</div></div>
+    <div class="step-dot"><div class="step-circle" id="sc4">4</div><div class="step-lbl" id="sl4">Tu CAME</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- PASO 1 -->
+<div class="screen active" id="screen1">
+  <div class="card">
+    <div class="card-title">Cuéntanos sobre tu negocio</div>
+    <div class="card-sub">Mientras más nos cuentes, más preciso será tu diagnóstico. Solo toma 2 minutos.</div>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Nombre del negocio</label>
+        <input type="text" id="emp-nombre" placeholder="Ej. Ferretería Los Andes" />
+      </div>
+      <div class="form-field">
+        <label>Sector / rubro</label>
+        <input type="text" id="emp-sector" placeholder="Ej. Ferretería, ropa, alimentos..." />
+      </div>
+      <div class="form-field">
+        <label>Tamaño del negocio</label>
+        <select id="emp-size">
+          <option value="">Selecciona...</option>
+          <option value="micro">Soy emprendedor / trabajo solo</option>
+          <option value="pequeña">Pequeño (2–10 personas)</option>
+          <option value="mediana">Mediano (11–50 personas)</option>
+          <option value="grande">Grande (50+ personas)</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Años en el mercado</label>
+        <input type="text" id="emp-anos" placeholder="Ej. 3 años, 8 meses..." />
+      </div>
+      <div class="form-field full">
+        <label>¿Cuál es tu principal desafío hoy?</label>
+        <textarea id="emp-contexto" maxlength="400" placeholder="Ej. Tengo ventas pero no me queda utilidad. La competencia me baja clientes. Quiero crecer pero no sé por dónde empezar..."></textarea>
+        <div class="char-count"><span id="ctx-c">0</span>/400</div>
+      </div>
+    </div>
+    <div id="err1" class="err-msg">Por favor completa nombre, sector y tamaño del negocio.</div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="ir2()">Siguiente →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASO 2 -->
+<div class="screen" id="screen2">
+  <div class="card">
+    <div class="gate-icon-wrap">📊</div>
+    <div class="card-title">¡Casi listo para tu diagnóstico!</div>
+    <div class="card-sub">Déjanos tus datos para poder acompañarte si lo necesitas. Tu información es privada y no la compartimos con nadie.</div>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Tu nombre</label>
+        <input type="text" id="con-nombre" placeholder="Ej. Carlos Quispe" />
+      </div>
+      <div class="form-field">
+        <label>Cargo o rol</label>
+        <input type="text" id="con-cargo" placeholder="Dueño, gerente, socio..." />
+      </div>
+      <div class="form-field">
+        <label>WhatsApp ✱</label>
+        <input type="tel" id="con-wsp" placeholder="999 123 456" />
+      </div>
+      <div class="form-field">
+        <label>Correo electrónico</label>
+        <input type="email" id="con-email" placeholder="tu@correo.com" />
+      </div>
+    </div>
+    <p class="privacy-note">🔒 No enviamos spam. Solo te contactamos si tú lo pides.</p>
+    <div id="err2" class="err-msg">Por favor ingresa tu nombre y número de WhatsApp.</div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="ir1()">← Atrás</button>
+      <button class="btn-primary" onclick="ir3()">Ir al DAFO →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASO 3 -->
+<div class="screen" id="screen3">
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-title">Tu análisis DAFO</div>
+    <div class="card-sub">El DAFO analiza tu negocio por dentro y por fuera. Escribe cada factor y presiona <strong>Enter</strong> para agregarlo. También puedes hacer clic en los ejemplos. Sé honesto — funciona mejor.</div>
+  </div>
+  <div class="dafo-grid">
+    <div class="dafo-quad">
+      <div class="dafo-quad-header">
+        <div class="dafo-dot" style="background:#16a34a"></div>
+        <span class="dafo-quad-title">Fortalezas</span>
+        <span class="dafo-badge" style="color:#16a34a;border-color:rgba(22,163,74,0.3);background:#f0fdf4">Interno +</span>
+      </div>
+      <div class="dafo-tip" style="border-color:#16a34a">¿En qué eres bueno? ¿Qué tienes que otros no?<em>Ej: buena atención, precio justo, local propio</em></div>
+      <div class="tag-area" id="area-F" onclick="fi('inp-F')">
+        <input class="tag-input" id="inp-F" placeholder="Escribe y presiona Enter..." onkeydown="tk(event,'F')" />
+      </div>
+      <div class="example-chips" id="chips-F"></div>
+    </div>
+    <div class="dafo-quad">
+      <div class="dafo-quad-header">
+        <div class="dafo-dot" style="background:#dc2626"></div>
+        <span class="dafo-quad-title">Debilidades</span>
+        <span class="dafo-badge" style="color:#dc2626;border-color:rgba(220,38,38,0.3);background:#fef2f2">Interno −</span>
+      </div>
+      <div class="dafo-tip" style="border-color:#dc2626">¿Qué te falta o en qué eres débil?<em>Ej: poco capital, sin presencia online, sin sistema</em></div>
+      <div class="tag-area" id="area-D" onclick="fi('inp-D')">
+        <input class="tag-input" id="inp-D" placeholder="Escribe y presiona Enter..." onkeydown="tk(event,'D')" />
+      </div>
+      <div class="example-chips" id="chips-D"></div>
+    </div>
+    <div class="dafo-quad">
+      <div class="dafo-quad-header">
+        <div class="dafo-dot" style="background:#2563eb"></div>
+        <span class="dafo-quad-title">Oportunidades</span>
+        <span class="dafo-badge" style="color:#2563eb;border-color:rgba(37,99,235,0.3);background:#eff6ff">Externo +</span>
+      </div>
+      <div class="dafo-tip" style="border-color:#2563eb">¿Qué está pasando afuera que puedes aprovechar?<em>Ej: mercado creciendo, competencia débil, redes</em></div>
+      <div class="tag-area" id="area-O" onclick="fi('inp-O')">
+        <input class="tag-input" id="inp-O" placeholder="Escribe y presiona Enter..." onkeydown="tk(event,'O')" />
+      </div>
+      <div class="example-chips" id="chips-O"></div>
+    </div>
+    <div class="dafo-quad">
+      <div class="dafo-quad-header">
+        <div class="dafo-dot" style="background:#d97706"></div>
+        <span class="dafo-quad-title">Amenazas</span>
+        <span class="dafo-badge" style="color:#d97706;border-color:rgba(217,119,6,0.3);background:#fffbeb">Externo −</span>
+      </div>
+      <div class="dafo-tip" style="border-color:#d97706">¿Qué factores externos te preocupan?<em>Ej: competidores nuevos, precios que suben</em></div>
+      <div class="tag-area" id="area-A" onclick="fi('inp-A')">
+        <input class="tag-input" id="inp-A" placeholder="Escribe y presiona Enter..." onkeydown="tk(event,'A')" />
+      </div>
+      <div class="example-chips" id="chips-A"></div>
+    </div>
+  </div>
+  <div id="err3" class="err-msg">Agrega al menos un factor en cada cuadrante del DAFO.</div>
+  <div class="btn-row">
+    <button class="btn-secondary" onclick="ir2()">← Atrás</button>
+    <button class="btn-primary" onclick="ir4()">✦ Generar mi CAME con IA</button>
+  </div>
+</div>
+
+<!-- PASO 4 -->
+<div class="screen" id="screen4">
+  <div class="summary-mini" id="summary-mini"></div>
+  <div class="came-grid">
+    <div class="came-card">
+      <div class="came-header"><div class="came-dot" style="background:#dc2626"></div><span class="came-title">Corregir</span><span class="came-badge" style="color:#dc2626;border-color:rgba(220,38,38,0.25);background:#fef2f2">Debilidades</span></div>
+      <div class="came-body" id="txt-C"><div class="spinner-wrap"><div class="spinner"></div> Analizando tu negocio...</div></div>
+    </div>
+    <div class="came-card">
+      <div class="came-header"><div class="came-dot" style="background:#d97706"></div><span class="came-title">Afrontar</span><span class="came-badge" style="color:#d97706;border-color:rgba(217,119,6,0.25);background:#fffbeb">Amenazas</span></div>
+      <div class="came-body" id="txt-A"><div class="spinner-wrap"><div class="spinner"></div> Analizando tu negocio...</div></div>
+    </div>
+    <div class="came-card">
+      <div class="came-header"><div class="came-dot" style="background:#16a34a"></div><span class="came-title">Mantener</span><span class="came-badge" style="color:#16a34a;border-color:rgba(22,163,74,0.25);background:#f0fdf4">Fortalezas</span></div>
+      <div class="came-body" id="txt-M"><div class="spinner-wrap"><div class="spinner"></div> Analizando tu negocio...</div></div>
+    </div>
+    <div class="came-card">
+      <div class="came-header"><div class="came-dot" style="background:#2563eb"></div><span class="came-title">Explotar</span><span class="came-badge" style="color:#2563eb;border-color:rgba(37,99,235,0.25);background:#eff6ff">Oportunidades</span></div>
+      <div class="came-body" id="txt-E"><div class="spinner-wrap"><div class="spinner"></div> Analizando tu negocio...</div></div>
+    </div>
+  </div>
+
+  <div class="conclusion-card" id="conclusion-box" style="display:none">
+    <div class="conclusion-label">✦ Conclusión estratégica</div>
+    <div class="conclusion-text" id="txt-conclusion"></div>
+  </div>
+
+  <div class="cierre-stat" id="cierre-box" style="display:none">
+    <div class="cierre-num">7 de 10</div>
+    <div class="cierre-msg">emprendedores tienen la información para crecer, pero <strong>no la tienen ordenada</strong>. Los datos que acabas de llenar son el primer paso real para cambiar eso.</div>
+  </div>
+
+  <div id="opciones-box" style="display:none">
+    <div class="opciones-title">¿Qué quieres hacer ahora?</div>
+    <div class="opcion-grid">
+      <div class="opcion-card" id="op1" onclick="elegirOpcion('contacto')">
+        <div class="opcion-icon">🚀</div>
+        <div class="opcion-title">Quiero subir de nivel</div>
+        <div class="opcion-desc">Hablar con un consultor y convertir este diagnóstico en un plan real.</div>
+      </div>
+      <div class="opcion-card" id="op2" onclick="elegirOpcion('herramientas')">
+        <div class="opcion-icon">🛠️</div>
+        <div class="opcion-title">Quiero más herramientas</div>
+        <div class="opcion-desc">Conocer herramientas gratuitas para gestionar mi negocio con datos.</div>
+      </div>
+    </div>
+    <button class="wsp-btn" id="btn-wsp" style="display:none" onclick="abrirWsp()">
+      💬 Hablar con un consultor de Modobeta
+    </button>
+    <div class="herr-msg" id="herr-msg">
+      ✅ <strong>¡Anotado!</strong> Te enviaremos acceso a nuestras próximas herramientas gratuitas de gestión, dashboards y métricas para emprendedores. Está atento a tu WhatsApp.
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  Hecho con 💛 por <strong>Modobeta</strong> · Decisiones con datos, resultados con propósito.
+</div>
+
+<script>
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzeoMn3q3A6pUy8F8kQZxwa4d1JmiS1a7wqiC4aIxGrr_Lb52BozfxPOi5EoD6txbsqYw/exec';
+const tags={F:[],D:[],O:[],A:[]};
+const colores={
+  F:{bg:'#f0fdf4',text:'#16a34a',border:'rgba(22,163,74,0.4)'},
+  D:{bg:'#fef2f2',text:'#dc2626',border:'rgba(220,38,38,0.4)'},
+  O:{bg:'#eff6ff',text:'#2563eb',border:'rgba(37,99,235,0.4)'},
+  A:{bg:'#fffbeb',text:'#d97706',border:'rgba(217,119,6,0.4)'}
+};
+const ejemplos={
+  F:['Buena atención','Local propio','Precio competitivo','Clientes fieles','Experiencia en el rubro','Calidad del producto'],
+  D:['Poca presencia online','Sin sistema de ventas','Capital limitado','Sin datos de clientes','Personal reducido','Sin publicidad'],
+  O:['Mercado en crecimiento','Competencia débil','Nueva zona sin atender','Redes sociales','Alianzas estratégicas','Temporada alta cerca'],
+  A:['Competidores nuevos','Precios que suben','Economía inestable','Productos sustitutos','Cambios de ley','Clientes más exigentes']
+};
+
+['F','D','O','A'].forEach(t=>{
+  const wrap=document.getElementById('chips-'+t);
+  ejemplos[t].forEach(ej=>{
+    const btn=document.createElement('button');
+    btn.className='example-chip'; btn.textContent='+ '+ej;
+    btn.onclick=()=>addTag(t,ej); wrap.appendChild(btn);
+  });
+});
+
+function fi(id){document.getElementById(id).focus();}
+function tk(e,t){if(e.key==='Enter'){e.preventDefault();const v=e.target.value.trim();if(v){addTag(t,v);e.target.value='';}}}
+function addTag(t,text){if(tags[t].includes(text))return;tags[t].push(text);renderTags(t);}
+function removeTag(t,i){tags[t].splice(i,1);renderTags(t);}
+function renderTags(t){
+  const area=document.getElementById('area-'+t);
+  const input=document.getElementById('inp-'+t);
+  const c=colores[t];
+  area.innerHTML='';
+  tags[t].forEach((txt,i)=>{
+    const s=document.createElement('span');
+    s.className='tag';
+    s.style.cssText=`background:${c.bg};color:${c.text};border-color:${c.border}`;
+    s.innerHTML=`${txt}<button onclick="removeTag('${t}',${i})">×</button>`;
+    area.appendChild(s);
+  });
+  area.appendChild(input);input.focus();
+}
+
+document.getElementById('emp-contexto').addEventListener('input',function(){
+  document.getElementById('ctx-c').textContent=this.value.length;
+});
+
+const pcts=['25%','50%','75%','100%'];
+function setStep(n){
+  for(let i=1;i<=4;i++){
+    document.getElementById('screen'+i).classList.toggle('active',i===n);
+    const sc=document.getElementById('sc'+i),sl=document.getElementById('sl'+i);
+    if(i<n){sc.className='step-circle done';sc.textContent='✓';}
+    else if(i===n){sc.className='step-circle active';sc.textContent=i;}
+    else{sc.className='step-circle';sc.textContent=i;}
+    sl.className='step-lbl'+(i===n?' active':'');
+  }
+  document.getElementById('pbar').style.width=pcts[n-1];
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function ir1(){setStep(1);}
+function ir2(){
+  const n=document.getElementById('emp-nombre').value.trim();
+  const s=document.getElementById('emp-sector').value.trim();
+  const z=document.getElementById('emp-size').value;
+  if(!n||!s||!z){document.getElementById('err1').classList.add('show');return;}
+  document.getElementById('err1').classList.remove('show');setStep(2);
+}
+function ir3(){
+  const n=document.getElementById('con-nombre').value.trim();
+  const w=document.getElementById('con-wsp').value.trim();
+  if(!n||!w){document.getElementById('err2').classList.add('show');return;}
+  document.getElementById('err2').classList.remove('show');setStep(3);
+}
+function ir4(){
+  if(!tags.F.length||!tags.D.length||!tags.O.length||!tags.A.length){
+    document.getElementById('err3').classList.add('show');return;
+  }
+  document.getElementById('err3').classList.remove('show');
+  setStep(4);renderSummary();
+  enviarSheets('diagnóstico completado','');
+  generarCAME();
+}
+
+function renderSummary(){
+  const sm={micro:'Emprendedor',pequeña:'Pequeño negocio',mediana:'Mediano',grande:'Grande'};
+  document.getElementById('summary-mini').innerHTML=[
+    `<span class="summary-pill"><span>${document.getElementById('emp-nombre').value.trim()}</span></span>`,
+    `<span class="summary-pill">Sector: <span>${document.getElementById('emp-sector').value.trim()}</span></span>`,
+    `<span class="summary-pill"><span>${sm[document.getElementById('emp-size').value]||''}</span></span>`
+  ].join('');
+}
+
+async function enviarSheets(impacto,siguiente){
+  const data={
+    empresa:document.getElementById('emp-nombre').value.trim(),
+    sector:document.getElementById('emp-sector').value.trim(),
+    tamanio:document.getElementById('emp-size').value,
+    anos:document.getElementById('emp-anos').value.trim(),
+    contexto:document.getElementById('emp-contexto').value.trim(),
+    contacto_nombre:document.getElementById('con-nombre').value.trim(),
+    contacto_cargo:document.getElementById('con-cargo').value.trim(),
+    contacto_wsp:document.getElementById('con-wsp').value.trim(),
+    contacto_email:document.getElementById('con-email').value.trim(),
+    dafo:{fortalezas:tags.F,debilidades:tags.D,oportunidades:tags.O,amenazas:tags.A},
+    siguiente_paso:siguiente,impacto:impacto
+  };
+  try{
+    await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  }catch(e){console.log('Sheets:',e);}
+}
+
+async function generarCAME(){
+  const nombre=document.getElementById('emp-nombre').value.trim();
+  const sector=document.getElementById('emp-sector').value.trim();
+  const anos=document.getElementById('emp-anos').value.trim();
+  const contexto=document.getElementById('emp-contexto').value.trim();
+  const payload={
+    accion:'generarCAME',
+    empresa:nombre,sector:sector,
+    tamanio:document.getElementById('emp-size').value,
+    anos:anos,contexto:contexto,
+    dafo:{fortalezas:tags.F,debilidades:tags.D,oportunidades:tags.O,amenazas:tags.A}
+  };
+  try{
+    const res=await fetch(SCRIPT_URL,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain'},
+      body:JSON.stringify(payload),
+      redirect:'follow'
+    });
+    const text=await res.text();
+    const data=JSON.parse(text);
+    const r=data.came;
+    renderS('txt-C',r.corregir);renderS('txt-A',r.afrontar);
+    renderS('txt-M',r.mantener);renderS('txt-E',r.explotar);
+    if(r.conclusion){
+      document.getElementById('txt-conclusion').textContent=r.conclusion;
+      document.getElementById('conclusion-box').style.display='block';
+    }
+    document.getElementById('cierre-box').style.display='block';
+    document.getElementById('opciones-box').style.display='block';
+  }catch(e){
+    ['txt-C','txt-A','txt-M','txt-E'].forEach(id=>{
+      document.getElementById(id).innerHTML='<span style="color:#dc2626;font-size:12px">Error al generar. Recarga e intenta de nuevo.</span>';
+    });
+  }
+}
+
+function renderS(id,d){
+  if(!d)return;
+  const li=(d.acciones||[]).map(a=>`<li>${a}</li>`).join('');
+  document.getElementById(id).innerHTML=`<p>${d.diagnostico||''}</p><ul>${li}</ul>`;
+}
+
+function elegirOpcion(op){
+  document.getElementById('op1').classList.toggle('selected',op==='contacto');
+  document.getElementById('op2').classList.toggle('selected',op==='herramientas');
+  document.getElementById('btn-wsp').style.display=op==='contacto'?'flex':'none';
+  document.getElementById('herr-msg').style.display=op==='herramientas'?'block':'none';
+  enviarSheets('diagnóstico + eligió opción',op==='contacto'?'Quiere consultoría':'Quiere más herramientas');
+}
+
+function abrirWsp(){
+  const empresa=document.getElementById('emp-nombre').value.trim();
+  const nombre=document.getElementById('con-nombre').value.trim();
+  const msg=encodeURIComponent(`Hola Modobeta! Acabo de hacer el diagnóstico DAFO+CAME de mi negocio "${empresa}" y me gustaría conversar sobre los próximos pasos. Soy ${nombre}.`);
+  window.open('https://wa.me/51999000000?text='+msg,'_blank');
+}
+</script>
+</body>
+</html>
